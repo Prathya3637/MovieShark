@@ -1,7 +1,6 @@
 package com.project.movieshark.dto;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import com.project.movieshark.entity.Genre;
 

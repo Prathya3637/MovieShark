@@ -3,6 +3,7 @@ package com.project.movieshark.service;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.project.movieshark.dto.ReviewRequestDTO;
 import com.project.movieshark.dto.ReviewResponseDTO;
@@ -10,7 +11,7 @@ import com.project.movieshark.entity.Review;
 import com.project.movieshark.mapper.ReviewMapper;
 import com.project.movieshark.repository.ReviewRepository;
 
-
+@Service
 public class ReviewService {
 	@Autowired
 	private ReviewRepository reviewRepo;
