@@ -27,7 +27,7 @@ public class MovieRequestDTO {
 	@NotNull(message = "Genre is requried!")
 	private Genre genre;
 	
-	@NotBlank(message = "Release date is requried!")
+	@NotNull(message = "Release date is requried!")
 	@PastOrPresent(message = "Release date should be in past or present")
 	private LocalDate releaseDate;
 	

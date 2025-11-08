@@ -36,7 +36,7 @@ public class Theater {
 	@Column(nullable=false)
 	private String address;
 	
-	@OneToMany(mappedBy = "theater", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "theater", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<TheaterSeat> seats;
 
     @OneToMany(mappedBy = "theater")

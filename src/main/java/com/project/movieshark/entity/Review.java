@@ -24,7 +24,7 @@ import lombok.Setter;
 @Entity
 public class Review {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@Column(nullable = false, length=100)

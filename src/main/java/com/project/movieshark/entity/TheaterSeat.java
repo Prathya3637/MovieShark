@@ -27,7 +27,7 @@ public class TheaterSeat {
 	private Integer id;
 	
 	@Column(nullable=false, unique=true)
-	private String number;
+	private String seatNumber;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=false)

@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name="shows")
 public class Show {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -38,7 +40,7 @@ public class Show {
 	@Column(nullable=false)
 	private LocalDateTime time;
 	
-	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ShowSeat> seats;
 
 	@OneToMany(mappedBy = "show", cascade = CascadeType.ALL)

@@ -34,7 +34,7 @@ public class ShowService {
 		for (TheaterSeat theaterSeat : theaterSeats) {
             ShowSeat showSeat = new ShowSeat();
             showSeat.setTheaterSeat(theaterSeat);
-            showSeat.setShow(showSeat.getShow());
+            showSeat.setShow(show);
             showSeat.setType(theaterSeat.getType());
             showSeat.setIsBooked(false);
             double price = 0;
@@ -66,6 +66,6 @@ public class ShowService {
 	}
 	
 	public List<ShowResponseDTO> searchByCityFromDB(String city){
-		return showMapper.toResponseDTOList(showRepo.findAllByCityIgnoreCase(city));
+		return showMapper.toResponseDTOList(showRepo.findByTheater_CityIgnoreCase(city));
 	}
 }
