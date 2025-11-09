@@ -23,6 +23,8 @@ public class SpringSecurity{
 	        .csrf(csrf -> csrf.disable())
 	        .authorizeHttpRequests(auth -> auth
 	            .requestMatchers("/user/login", "/user/register").permitAll()
+	            .requestMatchers("/admin/**","/movie/add","/movie/delete","/review/delete","/show/add","/show/remove","/theater/add","/theater/remove").hasRole("ADMIN")
+	            .requestMatchers("/movie/get","/movie/searchbytitle","/movie/searchbygenre","/review/add","/review/edit","/show/search").hasAnyRole("USER","ADMIN")
 	            .anyRequest().authenticated()
 	        )
 	        .sessionManagement(session -> session
