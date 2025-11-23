@@ -34,10 +34,10 @@ public class MovieController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(requestDTO);
 	}
 	
-	@GetMapping("/get")
-	public ResponseEntity<List<MovieResponseDTO>> getAllMovies(){
-		return ResponseEntity.status(HttpStatus.OK).body(movieService.getMoviesFromDB());
-	}
+//	@GetMapping("/get")
+//	public ResponseEntity<List<MovieResponseDTO>> getAllMovies(){
+//		return ResponseEntity.status(HttpStatus.OK).body(movieService.getMoviesFromDB());
+//	}
 	
 	@GetMapping("/searchbytitle/{title}")
 	public ResponseEntity<MovieResponseDTO> getMovieByTitle(@PathVariable String title){
@@ -49,15 +49,15 @@ public class MovieController {
 		return ResponseEntity.ok(movieService.deleteMovieFromDB(id));
 	}
 	
-	@GetMapping("/searchbygenre/{genre}")
-	public ResponseEntity<List<MovieResponseDTO>> getMovieByGenre(@PathVariable String genre){
+	@GetMapping("/searchbygenre/{genre}/{page}")
+	public ResponseEntity<List<MovieResponseDTO>> getMovieByGenre(@PathVariable String genre, @PathVariable Integer page){
 		Genre genreEnum;
 	    try {
 	        genreEnum = Genre.valueOf(genre.toUpperCase()); // normalize case
 	    } catch (IllegalArgumentException e) {
 	        throw new NoSuchElementException("Invalid genre: " + genre);
 	    }
-		return ResponseEntity.ok(movieService.getMoviesByGenreFromDB(genreEnum));
+		return ResponseEntity.ok(movieService.getMoviesByGenreFromDB(genreEnum,page));
 	}
 	
 	@PatchMapping("/updaterating/{id}")

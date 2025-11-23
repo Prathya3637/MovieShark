@@ -1,5 +1,8 @@
 package com.project.movieshark.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 import com.project.movieshark.dto.TheaterRequestDTO;
@@ -25,5 +28,12 @@ public class TheaterMapper {
 		responseDTO.setState(theater.getState());
 		responseDTO.setAddress(theater.getAddress());
 		return responseDTO;
+	}
+	
+	public List<TheaterResponseDTO> toTheaterResponseList(List<Theater> theaterList){
+		return theaterList
+						  .stream()
+						  .map(this::toResponse)
+						  .collect(Collectors.toList());
 	}
 }

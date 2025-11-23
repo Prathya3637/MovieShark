@@ -41,4 +41,5 @@ public class ShowController {
 	public ResponseEntity<List<ShowResponseDTO>> searchByCity(@PathVariable String city){
 		return ResponseEntity.status(HttpStatus.OK).body(showService.searchByCityFromDB(city));
 	}
+	
 }

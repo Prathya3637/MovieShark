@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.movieshark.Util.JwtUtil;
 import com.project.movieshark.dto.LoginResponse;
 import com.project.movieshark.dto.UserLoginDTO;
-import com.project.movieshark.dto.UserRegistrationDTO;
 import com.project.movieshark.dto.UserRequestDTO;
+import com.project.movieshark.entity.User;
+import com.project.movieshark.repository.UserRepository;
+import com.project.movieshark.security.CustomUserDetails;
+import com.project.movieshark.service.CustomUserDetailService;
 import com.project.movieshark.service.UserService;
 
 import jakarta.validation.Valid;
@@ -25,11 +29,17 @@ import jakarta.validation.Valid;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
+	@Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private CustomUserDetailService customUserDetailService;
+
+    @Autowired
+    private UserRepository userRepo;
     
     @Autowired
     private UserService userService;
@@ -37,16 +47,22 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDTO request) {
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getEmail(), request.getPassword()
-                    )
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
 
-            String token = jwtUtil.generateToken(request.getEmail());
+            // Load user and userDetails
+            User user = userRepo.findByEmail(request.getEmail())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            CustomUserDetails cud = new CustomUserDetails(user);
+
+            // Generate token with roles list (here single role)
+            String token = jwtUtil.generateToken(cud, cud.getRole());
+
             return ResponseEntity.ok(new LoginResponse(token));
 
-        } catch (AuthenticationException e) {
+        } catch (AuthenticationException ex) {
             return ResponseEntity.status(401).body("Invalid username or password");
         }
     }

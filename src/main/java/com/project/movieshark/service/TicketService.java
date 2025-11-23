@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.movieshark.dto.TicketBookingRequestDTO;
 import com.project.movieshark.dto.TicketResponseDTO;
+import com.project.movieshark.emailservice.EmailService;
 import com.project.movieshark.entity.Show;
 import com.project.movieshark.entity.ShowSeat;
 import com.project.movieshark.entity.Ticket;
@@ -31,6 +32,9 @@ public class TicketService {
 
 	    @Autowired
 	    private TicketRepository ticketRepo;
+	    
+	    @Autowired
+	    private EmailService emailService;
 
 	    public TicketResponseDTO bookTicket(TicketBookingRequestDTO request, String userEmail) {
 	        // 1️⃣ Find user
@@ -90,7 +94,7 @@ public class TicketService {
 	        response.setSeats(ticket.getAllottedSeats());
 	        response.setAmount(totalAmount);
 	        response.setBookedAt(ticket.getBookedAt());
-
+	        emailService.sendTicketEmail(user.getEmail(), ticket);
 	        return response;
 	    }
 }

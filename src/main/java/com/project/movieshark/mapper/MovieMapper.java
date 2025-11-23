@@ -3,6 +3,7 @@ package com.project.movieshark.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.project.movieshark.dto.MovieRequestDTO;
@@ -57,7 +58,7 @@ public class MovieMapper {
 	    return dto;
 	}
 	
-	public List<MovieResponseDTO> toMovieResponseList(List<Movie> movieList){
+	public List<MovieResponseDTO> toMovieResponseList(Page<Movie> movieList){
 		return movieList
 					   .stream()
 					   .map(this::toResponse)

@@ -1,7 +1,8 @@
 package com.project.movieshark.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +61,10 @@ public class TheaterService {
 		theaterRepo.delete(theater);;
 		return theaterMapper.toResponse(theater);
 		
+	}
+	
+	public List<TheaterResponseDTO> findTheaterByCity(String city){
+		List<Theater> theaterList = theaterRepo.findByCityIgnoreCase(city).orElseThrow(()-> new NoSuchElementException("No theater found in: "+city));
+		return theaterMapper.toTheaterResponseList(theaterList);
 	}
 }

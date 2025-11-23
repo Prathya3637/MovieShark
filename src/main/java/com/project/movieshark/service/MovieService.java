@@ -3,6 +3,10 @@ package com.project.movieshark.service;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,10 +33,11 @@ public class MovieService {
 		return movieRepo.save(movie);
 	}
 	
-	public List<MovieResponseDTO> getMoviesFromDB() {
-		List<Movie> movieList = movieRepo.findAll();
-		return mapper.toMovieResponseList(movieList);
-	}
+//	public List<MovieResponseDTO> getMoviesFromDB() {
+//		
+//		List<Movie> movieList = movieRepo.findAll();
+//		return mapper.toMovieResponseList(movieList);
+//	}
 	
 	public MovieResponseDTO getMovieByTitleFromDB(String name) {
 		return movieRepo.findByTitleIgnoreCase(name)
@@ -53,8 +58,10 @@ public class MovieService {
 						.orElseThrow(()-> new NoSuchElementException("Invalid Movie Id"));
 	}
 	
-	public List<MovieResponseDTO> getMoviesByGenreFromDB(Genre genre){
-		List<Movie> movies = movieRepo.findAllByGenre(genre);
+	public List<MovieResponseDTO> getMoviesByGenreFromDB(Genre genre, Integer page){
+		Pageable pageable = PageRequest.of(page, 5,Sort.by("rating").descending());
+		
+		Page<Movie> movies = movieRepo.findAllByGenre(genre,pageable);
 		if(movies.isEmpty()) {
 			throw new NoSuchElementException("No movie with this genre");
 		}

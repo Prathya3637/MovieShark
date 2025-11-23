@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.movieshark.dto.MovieResponseDTO;
 import com.project.movieshark.dto.ReviewRequestDTO;
 import com.project.movieshark.dto.ReviewResponseDTO;
 import com.project.movieshark.entity.Review;
@@ -16,13 +17,19 @@ public class ReviewService {
 	@Autowired
 	private ReviewRepository reviewRepo;
 	
-	
+	@Autowired
+	private MovieService movieService;
 	
 	@Autowired
 	private ReviewMapper mapper;
 	
-	public Review addReviewToDB(ReviewRequestDTO request) {
-		return reviewRepo.save(mapper.toEntity(request));
+	
+	public Review addReviewToDB(ReviewRequestDTO request)
+	{	
+		reviewRepo.save(mapper.toEntity(request));
+		MovieResponseDTO movie = movieService.getMovieByTitleFromDB(request.getMovieTitle());
+		movieService.updateRatingForMovie(movie.getMovieId());
+		return mapper.toEntity(request);
 	}
 	public ReviewResponseDTO deleteReviewFromDB(Integer id){
 		Review review = reviewRepo.findById(id).orElseThrow(()-> new NoSuchElementException("No review found with this id"));
